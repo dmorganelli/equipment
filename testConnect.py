@@ -4,7 +4,9 @@ Created on Thu Jun 18 22:41:29 2020
 
 @author: Darrel
 """
-import os
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__))+'\\ConnectVisa')
+sys.path.append(os.path.dirname(os.path.abspath(__file__))+'\\PowerSupply')
 from connectVisa import connectEquipment
 from powerSupply import*
 os.path.exists('c:/')
