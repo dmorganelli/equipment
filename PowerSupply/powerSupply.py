@@ -11,6 +11,8 @@ class powerSupply(measureVisa,commands):
     def __init__(self,psVisa):
         commands.__init__(self, psVisa)
         self.measure = measureVisa(self)
+
+        self.defaultChannel = 'CH1';
     
         
         

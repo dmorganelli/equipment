@@ -14,9 +14,9 @@ equipment = connectEquipment();
 pwr,scp = equipment.autoConnect();
 
 ps = powerSupply(pwr);
-ps.defaultChannel = 'CH1';
+# ps.defaultChannel = 'CH1';
 # measuredValues = ps.measureAll();
-ps.measure.defaultChannel = 'CH1';
+# ps.measure.defaultChannel = 'CH1';
 measuredValues = ps.measure.all();
 # measuredValues = ps.measure('all','ch1')
 # ps.meas();
