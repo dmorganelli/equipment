@@ -18,10 +18,12 @@ ps = powerSupply(pwr);
 # measuredValues = ps.measureAll();
 # ps.measure.defaultChannel = 'CH1';
 measuredValues = ps.measure.all();
+measuredVoltage = ps.measure.volt();
 # measuredValues = ps.measure('all','ch1')
 # ps.meas();
 # ps.all();
 # measuredValues = ps.ch3();
 print(measuredValues);
+print(measuredVoltage);
 
 #measuredValues = ps,meas.all.ch3();

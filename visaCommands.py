@@ -30,6 +30,8 @@ class commands:
         
     def _convertToNumber(self,stringArray):
         val = [float(x) for x in stringArray.split(',')];
+        if len(val)==1:
+            val = val[0];
         return val
     
 class apply(commands):
