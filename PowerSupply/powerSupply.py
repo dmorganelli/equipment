@@ -6,10 +6,10 @@ Created on Fri Jun 19 19:39:31 2020
 """
 # from types import SimpleNamespace
 from visaCommands import *
-class powerSupply(apply,measure,output):
+class powerSupply(measureVisa):
     def __init__(self,psVisa):
         super().__init__(psVisa);
-        self.measure = measure(self._visa);
+        self.measure = measureVisa(self._visa)
         # self.visa = psVisa;
         # self.idn = self.getIdn();
         # self.defaultChannel = '';
@@ -52,4 +52,4 @@ class powerSupply(apply,measure,output):
     # def applyChannel(self,channel, voltage = 5, current = 1):
         
         
-        
+

@@ -60,23 +60,23 @@ class apply(commands):
         chSettings = self._sendQuery(appString,channel);
         return chSettings
         
-class measure(commands):
+# class measure(commands):
 
-    def all(self):
-        val = self._convertToNumber(self._sendQuery(measString + ':ALL'));
-        return val
+#     def all(self):
+#         val = self._convertToNumber(self._sendQuery(measString + ':ALL'));
+#         return val
         
-    def curr(self):
-        val = self._convertToNumber(self._sendQuery(measString + ':CURR'));
-        return val
+#     def curr(self):
+#         val = self._convertToNumber(self._sendQuery(measString + ':CURR'));
+#         return val
     
-    def pwr(self):
-        val = self._convertToNumber(self._sendQuery(measString + ':POWE'));
-        return val
+#     def pwr(self):
+#         val = self._convertToNumber(self._sendQuery(measString + ':POWE'));
+#         return val
         
-    def volt(self):
-        val = self._convertToNumber(self._sendQuery(measString + ':VOLT'));
-        return val
+#     def volt(self):
+#         val = self._convertToNumber(self._sendQuery(measString + ':VOLT'));
+#         return val
     
 class output(commands):
     """
