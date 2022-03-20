@@ -30,7 +30,7 @@ class apply():
 
     @defaultChannel.setter
     def defaultChannel(self,channel = 1):
-        if channel: #channel in empty when imported. this could be avoided with __main__.
+        if channel: #channel in empty when called during visaCommands init from powerSupply class.
             if (channel >= 1 ) & (channel <= 3):
                 self._defaultChannel = 'CH'+str(channel)
                 self.visaCommands._writeVal(self.startString)
