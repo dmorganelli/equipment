@@ -35,5 +35,5 @@ class apply():
     def settingsCh(self, channel=''):
         if not channel:
             channel = self.defaultChannel
-        chSettings = self._sendQuery(appString, channel)
+        chSettings = self._sendQuery(self.startString, channel)
         return chSettings
