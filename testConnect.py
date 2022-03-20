@@ -27,4 +27,5 @@ measuredVoltage = ps.measure.volt();
 print(measuredValues);
 print(measuredVoltage);
 
+ps.defaultChannel = 1
 #measuredValues = ps,meas.all.ch3();
