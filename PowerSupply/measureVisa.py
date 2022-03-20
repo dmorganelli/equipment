@@ -12,20 +12,20 @@ class measureVisa():
  
     def all(self):
         val = self.visaCommands._convertToNumber(
-            self.visaCommands._sendQuery(self.startString + ':ALL'))
+            self.visaCommands._sendQuery(self.startString + ':ALL', self.visaCommands.defaultChannel))
         return val
 
     def curr(self):
         val = self.visaCommands._convertToNumber(
-            self.visaCommands._sendQuery(self.startString + ':CURR'))
+            self.visaCommands._sendQuery(self.startString + ':CURR', self.visaCommands.defaultChannel))
         return val
         
     def pwr(self):
         val = self.visaCommands._convertToNumber(
-            self.visaCommands._sendQuery(self.startString + ':POWE'))
+            self.visaCommands._sendQuery(self.startString + ':POWE', self.visaCommands.defaultChannel))
         return val
         
     def volt(self):
         val = self.visaCommands._convertToNumber(
-            self.visaCommands._sendQuery(self.startString + ':VOLT'))
+            self.visaCommands._sendQuery(self.startString + ':VOLT', self.visaCommands.defaultChannel))
         return val
