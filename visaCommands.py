@@ -4,8 +4,6 @@ Created on Sun Jun 21 20:28:46 2020
 
 @author: Darrel
 """
-appString = ':APPL';
-measString = ':MEAS';
 outString = ':OUTP';
 class commands:
     def __init__(self,psVisa):
@@ -34,33 +32,7 @@ class commands:
             val = val[0];
         return val
     
-class apply(commands):
-        
-    def ch1(self):
-        self.defaultChannel = 'CH1';
-        self._writeVal(appString);
-        
-    def ch2(self):
-        self.defaultChannel = 'CH2';
-        self._writeVal(appString);
-        
-    def ch3(self):
-        self.defaultChannel = 'CH3';
-        self._writeVal(appString);
-        
-    def settingsDefaultCh(self):
-        if not self.defaultChannel:
-            print('No default channel set.\n');
-            chSettings = '';
-        else:
-            chSettings = self._sendQuery(appString);
-        return chSettings
-    
-    def settingsCh(self,channel = ''):
-        if not channel:
-            channel = self.defaultChannel;
-        chSettings = self._sendQuery(appString,channel);
-        return chSettings
+
     
 class output(commands):
     """

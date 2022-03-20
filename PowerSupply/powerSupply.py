@@ -4,15 +4,17 @@ Created on Fri Jun 19 19:39:31 2020
 
 @author: Darrel
 """
-from measureVisa import measureVisa
-# from types import SimpleNamespace
 from visaCommands import commands
-class powerSupply(measureVisa,commands):
+from measureVisa import measureVisa
+from rigol_channelVisa import apply
+
+
+class powerSupply(commands,apply, measureVisa):
     def __init__(self,psVisa):
         commands.__init__(self, psVisa)
+        apply.__init__(self,self)
         self.measure = measureVisa(self)
 
-        self.defaultChannel = 'CH1';
     
         
         
