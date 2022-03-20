@@ -8,7 +8,6 @@ from visaCommands import commands
 from measureVisa import measureVisa
 from rigol_channelVisa import apply
 
-
 class powerSupply(commands,apply):
     def __init__(self,psVisa):
         commands.__init__(self, psVisa)
