@@ -17,6 +17,7 @@ ps = powerSupply(pwr);
 # ps.defaultChannel = 'CH1';
 # measuredValues = ps.measureAll();
 # ps.measure.defaultChannel = 'CH1';
+print(ps.settingsCh(1));
 measuredValues = ps.measure.all();
 measuredVoltage = ps.measure.volt();
 # measuredValues = ps.measure('all','ch1')

@@ -15,16 +15,15 @@ class commands:
         stringVal = self._visa.query("*IDN?");
         return stringVal  
        
-    def _sendQuery(self, command, channel=''):
-        if not channel:
-            channel = self.defaultChannel;
-        val = self._visa.query(command + '? ' + channel);
+    def _sendQuery(self, command, secondCommand = ''):
+        if not secondCommand:
+            val = self._visa.query(command + '? ');
+        else:
+            val = self._visa.query(command + '? ' + secondCommand);
         return val
     
-    def _writeVal(self, command, channel=''):
-        if not channel:
-            channel = self.defaultChannel;
-        self._visa.write(command + ' ' + channel);
+    def _writeVal(self, command):
+        self._visa.write(command);
         
     def _convertToNumber(self,stringArray):
         val = [float(x) for x in stringArray.split(',')];
