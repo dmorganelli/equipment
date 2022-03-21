@@ -10,40 +10,40 @@ class apply():
     def __init__(self,visaCommands):
         self.visaCommands = visaCommands
         self.startString = ':APPL';
-        self.defaultChannel = 1
+        self.activeChannel = 1
 
     def ch1(self):
-        self.defaultChannel = 1;
+        self.activeChannel = 1;
         self.visaCommands._writeVal(
-            self.startString + ' ' + self._defaultChannel)
+            self.startString + ' ' + self._activeChannel)
 
     def ch2(self):
-        self.defaultChannel = 2;
+        self.activeChannel = 2;
         self.visaCommands._writeVal(
-            self.startString + ' ' + self._defaultChannel)
+            self.startString + ' ' + self._activeChannel)
 
     def ch3(self):
-        self.defaultChannel = 3;
+        self.activeChannel = 3;
         self.visaCommands._writeVal(
-            self.startString + ' ' + self._defaultChannel)
+            self.startString + ' ' + self._activeChannel)
 
     @property #getter 
-    def defaultChannel(self):
-        return self._defaultChannel
+    def activeChannel(self):
+        return self._activeChannel
 
-    @defaultChannel.setter
-    def defaultChannel(self,channel = 1):
+    @activeChannel.setter
+    def activeChannel(self,channel = 1):
         if channel: #channel in empty when called during visaCommands init from powerSupply class.
             if (channel >= 1 ) & (channel <= 3):
-                self._defaultChannel = 'CH'+str(channel)
+                self._activeChannel = 'CH'+str(channel)
                 self.visaCommands._writeVal(
-                    self.startString + ' ' + self._defaultChannel)
+                    self.startString + ' ' + self._activeChannel)
             else:
-                print('Not a valid Channel. Defaults is still set to '+self._defaultChannel)
+                print('Not a valid Channel. actives is still set to '+self._activeChannel)
 
     def settingsCh(self, channel=''):
         if not channel:
-            channel = self.defaultChannel
+            channel = self.activeChannel
         else:
             if _checkChannel(channel):
                 channel = 'CH'+str(channel)

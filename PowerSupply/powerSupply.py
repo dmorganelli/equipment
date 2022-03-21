@@ -6,7 +6,7 @@ Created on Fri Jun 19 19:39:31 2020
 """
 from visaCommands import commands
 from measureVisa import measureVisa
-from rigol_channelVisa import apply
+from rigol_activeChannelVisa import apply
 
 class powerSupply(commands,apply):
     def __init__(self,psVisa):
