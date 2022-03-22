@@ -16,16 +16,18 @@ pwr,scp = equipment.autoConnect();
 ps = powerSupply(pwr);
 # ps.defaultChannel = 'CH1';
 # measuredValues = ps.measureAll();
-ps.defaultChannel = 2;
+ps.activeChannel = 2;
 print(ps.settingsCh(3));
 measuredValues = ps.measure.all();
 measuredVoltage = ps.measure.volt();
+measuredLimit = ps.ch1.voltage.limit;
 # measuredValues = ps.measure('all','ch1')
 # ps.meas();
 # ps.all();
 # measuredValues = ps.ch3();
 print(measuredValues);
 print(measuredVoltage);
-
-ps.defaultChannel = 1
+print(measuredLimit)
+ps.ch1.voltage.enableLimit;
+ps.activeChannel = 1
 #measuredValues = ps,meas.all.ch3();

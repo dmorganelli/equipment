@@ -9,7 +9,7 @@ class commands:
     def __init__(self,psVisa):
         self._visa = psVisa;
         self.idn = self.getIdn();
-        self.defaultChannel = '';
+        self.activeChannel = '';
         
     def getIdn(self):
         stringVal = self._visa.query("*IDN?");
@@ -17,8 +17,10 @@ class commands:
        
     def _sendQuery(self, command, secondCommand = ''):
         if not secondCommand:
-            val = self._visa.query(command + '? ');
+            val = self._visa.query(command + '?');
         else:
+            if _checkChannel(secondCommand):
+                secondCommand = 'CH%d' % secondCommand
             val = self._visa.query(command + '? ' + secondCommand);
         return val
     
@@ -30,6 +32,12 @@ class commands:
         if len(val)==1:
             val = val[0];
         return val
+
+def _checkChannel(channel):
+    validChannel = False
+    if (type(channel) == int) and (channel >= 1) & (channel <= 3):
+        validChannel = True
+    return validChannel
     
 
     

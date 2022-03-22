@@ -44,11 +44,11 @@ class apply():
     def settingsCh(self, channel=''):
         if not channel:
             channel = self.activeChannel
-        else:
-            if _checkChannel(channel):
-                channel = 'CH'+str(channel)
-            else:
-                print('Not a valid Channel.')
+        # else:
+            # if _checkChannel(channel):
+            #     channel = 'CH'+str(channel)
+            # else:
+            #     print('Not a valid Channel.')
         chSettings = self._sendQuery(self.startString, channel)
         return chSettings
 
