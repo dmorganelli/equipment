@@ -4,6 +4,8 @@ Created on Sun Jun 21 20:28:46 2020
 
 @author: Darrel
 """
+import regex as re
+
 outString = ':OUTP';
 class commands:
     def __init__(self,psVisa):
@@ -28,7 +30,8 @@ class commands:
         self._visa.write(command);
         
     def _convertToNumber(self,stringArray):
-        val = [float(x) for x in stringArray.split(',')];
+        # ([0-9],'.',',')
+        val = [float(x) for x in re.findall("(\d+\.\d*|\d+)", stringArray)]
         if len(val)==1:
             val = val[0];
         return val

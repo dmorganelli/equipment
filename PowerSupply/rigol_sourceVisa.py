@@ -11,9 +11,70 @@ class source():
         self.channel = channel
         self.sourceType = sourceType
         self.startString = ':SOUR%d:%s' % (channel,sourceType)
-        self._absolutLimit = getLimit(channel,sourceType)
+        self._defineLimits(channel, sourceType)
         self.enableLimit = 0;
+        self.level = 'MIN'
         self.limit = 'MAX'
+        # self.trigger = 'MIN' # functions not available with this power supply
+
+    @property
+    def level(self):#needs an IMMediate version. sets level on trigger event
+        return self.visaCommands._convertToNumber(self.visaCommands._sendQuery(
+            self.startString))
+
+    @level.setter
+    def level(self,sourceLevel):
+        if (type(sourceLevel) == str) and ((sourceLevel.upper() == 'UP') or (sourceLevel.upper() == 'DOWN')):
+            if (type(sourceLevel) == str) and (sourceLevel.upper() == 'UP'):
+                self._level += self._setIncrement
+            elif (type(sourceLevel) == str) and (sourceLevel.upper() == 'DOWN'):
+                self._level -= self._setIncrement
+                
+            self.visaCommands._writeVal(self.startString+' '+str(self._level))# UP and DOWN commands not working 
+
+        else:
+            validLevel = self._writeValidInput(sourceLevel, self.startString)
+            if validLevel:
+                if (type(sourceLevel) == str) and (sourceLevel.upper()=='MAX'):
+                    self._level = self._maxLimit
+                elif (type(sourceLevel) == str) and (sourceLevel.upper()=='MIN'):
+                    self._level = self._minLimit
+                else:
+                    self._level = sourceLevel
+
+    @property
+    def step(self):
+        return self.visaCommands._convertToNumber(self.visaCommands._sendQuery(
+            self.startString+':STEP'))
+
+    @step.setter
+    def step(self, setStep):
+        validStep = 0
+        if (type(setStep) == str):
+            if ((setStep.upper() == 'DEF') or (setStep.upper() == 'DEFAULT')):
+                validStep = 1
+            else:
+                print('Only acceptable string is DEF or DEFAULT.')
+        elif (setStep <= self._maxLimit) and (setStep >= 0):
+            validStep = 1
+            setStep = str(setStep)
+
+        if validStep:
+            if (type(setStep) == str) and ((setStep.upper() == 'DEF') or (setStep.upper() == 'DEFAULT')):
+                self._setIncrement = self._minIncrement
+            else:
+                self._setIncrement = float(setStep)
+            self.visaCommands._writeVal(self.startString+setStep)
+    
+    # functions not available with this power supply
+    # @property 
+    # def trigger(self):
+    #     return self.visaCommands._convertToNumber(self.visaCommands._sendQuery(
+    #         self.startString+':TRIG'))
+
+    # @trigger.setter
+    # def trigger(self,triggerLevel):
+    #     self._writeValidInput(triggerLevel, self.startString+':TRIG ')
 
     @property
     def limitTripped(self):
@@ -55,35 +116,40 @@ class source():
 
     @limit.setter
     def limit(self,limit):
+        self._writeValidInput(limit, self.startString+':PROT ')
+
+    def _writeValidInput(self,checkInput,writeString):
         validSetLimit = 0
-        if (type(limit) == str):
-            if ((limit.upper() == 'MAX') or (limit.upper() == 'MIN')):
-                validSetLimit = 1;
+        if (type(checkInput) == str):
+            if ((checkInput.upper() == 'MAX') or (checkInput.upper() == 'MIN')):
+                validSetLimit = 1
             else:
                 print('Only acceptable string is MIN or MAX.')
-        elif (limit<=self._absolutLimit)&(limit>=0):
+        elif (checkInput <= self._maxLimit) and (checkInput >= 0):
             validSetLimit = 1
-            limit = str(limit)
+            checkInput = str(checkInput)
 
         if validSetLimit:
-            self.visaCommands._writeVal(
-                self.startString+':PROT '+limit)
+            self.visaCommands._writeVal(writeString+' '+checkInput)
+        return validSetLimit
 
-def getLimit(channel,sourceType):
-    """
-    Channel (Range) | OVP/OCP Settable Range   | OVP/OCP Default Value
-    ----------------------------------------------------------------
-    CH1 (30V/3A)    | 10mV to 33V/1mA to 3.3A  | 33.00V/3.300A
-    CH2 (30V/3A)    | 10mV to 33V/1mA to 3.3A  | 33.00V/3.300A
-    CH3 (5V/3A)     | 10mV to 5.5V/1mA to 3.3A | 5.50V/3.300A
-    
-    """
-    absoluteLimit = None
-    if sourceType == 'CURR':
-        absoluteLimit = 3.3
-    elif sourceType == 'VOLT':
-        absoluteLimit = 33
-        if channel == 3:
-            absoluteLimit = 5.5
-    
-    return absoluteLimit
+    def _defineLimits(self, channel, sourceType):
+        """
+        Channel (Range) | OVP/OCP Settable Range   | OVP/OCP Default Value
+        ----------------------------------------------------------------
+        CH1 (30V/3A)    | 10mV to 33V/1mA to 3.3A  | 33.00V/3.300A
+        CH2 (30V/3A)    | 10mV to 33V/1mA to 3.3A  | 33.00V/3.300A
+        CH3 (5V/3A)     | 10mV to 5.5V/1mA to 3.3A | 5.50V/3.300A
+        
+        """
+        self._minIncrement = None
+        self._maxLimit = None
+        self._minLimit = 0
+        if sourceType == 'CURR':
+            self._minIncrement = 0.001 #minimum increment resolition can be reduced with high resolution option
+            self._maxLimit = 3.3
+        elif sourceType == 'VOLT':
+            self._minIncrement = 0.001
+            self._maxLimit = 33
+            if channel == 3:
+                self._maxLimit = 5.5
