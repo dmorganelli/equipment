@@ -19,8 +19,8 @@ ps = powerSupply(pwr);
 ps.activeChannel = 2;
 ps.ch1.voltage.level = 6;
 print(ps.settingsCh(3));
-measuredValues = ps.measure.all();
-measuredVoltage = ps.measure.volt();
+measuredValues = ps.ch1.measure.all();
+measuredVoltage = ps.ch1.measure.volt();
 measuredLimit = ps.ch1.voltage.limit;
 # measuredValues = ps.measure('all','ch1')
 # ps.meas();
@@ -32,5 +32,8 @@ print(measuredLimit)
 ps.ch1.voltage.enableLimit;
 ps.ch1.voltage.step = 0.5
 ps.ch1.voltage.level = 'DOWN'
+ps.ch1.enable()
+ps.ch1.disable()
+ps.ch1.current.level = .1
 ps.activeChannel = 1
 #measuredValues = ps,meas.all.ch3();

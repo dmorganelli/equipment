@@ -4,18 +4,17 @@ Created on Sun Mar 21 20:17:21 2022
 
 @author: Darrel
 """
+# from rigol_channelVisa import channel2String
 
 class source():
-    def __init__(self, visaCommands, channel, sourceType): 
+    def __init__(self, visaCommands, sourceType, channel = ''): 
         self.visaCommands = visaCommands
-        self.channel = channel
         self.sourceType = sourceType
-        self.startString = ':SOUR%d:%s' % (channel,sourceType)
-        self._defineLimits(channel, sourceType)
-        self.enableLimit = 0;
-        self.level = 'MIN'
-        self.limit = 'MAX'
-        # self.trigger = 'MIN' # functions not available with this power supply
+        if channel == '':
+            self.startString = ':%s' % (self.sourceType)
+        else:
+            self.startString = ':SOUR%d:%s' % (channel, self.sourceType)
+            self._defineLimits(channel)
 
     @property
     def level(self):#needs an IMMediate version. sets level on trigger event
@@ -29,7 +28,7 @@ class source():
                 self._level += self._setIncrement
             elif (type(sourceLevel) == str) and (sourceLevel.upper() == 'DOWN'):
                 self._level -= self._setIncrement
-                
+            
             self.visaCommands._writeVal(self.startString+' '+str(self._level))# UP and DOWN commands not working 
 
         else:
@@ -64,7 +63,6 @@ class source():
                 self._setIncrement = self._minIncrement
             else:
                 self._setIncrement = float(setStep)
-            self.visaCommands._writeVal(self.startString+setStep)
     
     # functions not available with this power supply
     # @property 
@@ -133,7 +131,7 @@ class source():
             self.visaCommands._writeVal(writeString+' '+checkInput)
         return validSetLimit
 
-    def _defineLimits(self, channel, sourceType):
+    def _defineLimits(self, channel):
         """
         Channel (Range) | OVP/OCP Settable Range   | OVP/OCP Default Value
         ----------------------------------------------------------------
@@ -145,10 +143,10 @@ class source():
         self._minIncrement = None
         self._maxLimit = None
         self._minLimit = 0
-        if sourceType == 'CURR':
+        if self.sourceType == 'CURR':
             self._minIncrement = 0.001 #minimum increment resolition can be reduced with high resolution option
             self._maxLimit = 3.3
-        elif sourceType == 'VOLT':
+        elif self.sourceType == 'VOLT':
             self._minIncrement = 0.001
             self._maxLimit = 33
             if channel == 3:

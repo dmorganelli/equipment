@@ -24,6 +24,11 @@ class commands:
             if _checkChannel(secondCommand):
                 secondCommand = 'CH%d' % secondCommand
             val = self._visa.query(command + '? ' + secondCommand);
+        findLogic = re.findall('(YES*|NO*)', val.upper())
+        if findLogic != []:
+            val = False
+            if findLogic[0] == 'YES':
+                val = True
         return val
     
     def _writeVal(self, command):
@@ -41,43 +46,3 @@ def _checkChannel(channel):
     if (type(channel) == int) and (channel >= 1) & (channel <= 3):
         validChannel = True
     return validChannel
-    
-
-    
-class output(commands):
-    """
-    Channel (Range) | OVP/OCP Settable Range   | OVP/OCP Default Value
-    ----------------------------------------------------------------
-    CH1 (30V/3A)    | 10mV to 33V/1mA to 3.3A  | 33.00V/3.300A
-    CH2 (30V/3A)    | 10mV to 33V/1mA to 3.3A  | 33.00V/3.300A
-    CH3 (5V/3A)     | 10mV to 5.5V/1mA to 3.3A | 5.50V/3.300A
-    
-    """
-    def getMode(self):
-        val = self._sendQuery(outString + ':MODE');
-        return val
-    
-    def outModeCheckEnable(self,channel = ''):
-        if not channel:
-            channel = self.defaultChannel;
-        val = self._sendQuery(outString,channel);
-        return val
-    
-    def outputEnable(self,channel = ''):
-        if not channel:
-            channel = self.defaultChannel;
-        self._writeVal(outString + ' ' + channel + ',ON','');
-        
-    def outputDisable(self,channel = ''):
-        if not channel:
-            channel = self.defaultChannel;
-        self._writeVal(outString + ' ' + channel + ',OFF','');
-        
-# class channel(commands,measure):
-#     def __init__(self):
-#         super.__init__();
-        
-# class ch1(channel):
-#     def __init__(self):
-#         super.__init__();
-#         self.defaultChannel = 'CH1';
