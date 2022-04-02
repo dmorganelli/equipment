@@ -14,18 +14,14 @@ equipment = connectEquipment();
 pwr,scp = equipment.autoConnect();
 
 ps = powerSupply(pwr);
-# ps.defaultChannel = 'CH1';
-# measuredValues = ps.measureAll();
+
 ps.activeChannel = 2;
 ps.ch1.voltage.level = 6;
 print(ps.settingsCh(3));
 measuredValues = ps.ch1.measure.all();
 measuredVoltage = ps.ch1.measure.volt();
 measuredLimit = ps.ch1.voltage.limit;
-# measuredValues = ps.measure('all','ch1')
-# ps.meas();
-# ps.all();
-# measuredValues = ps.ch3();
+
 print(measuredValues);
 print(measuredVoltage);
 print(measuredLimit)
@@ -36,4 +32,3 @@ ps.ch1.enable()
 ps.ch1.disable()
 ps.ch1.current.level = .1
 ps.activeChannel = 1
-#measuredValues = ps,meas.all.ch3();
