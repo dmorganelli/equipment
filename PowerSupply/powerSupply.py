@@ -9,12 +9,12 @@ from rigol_measureVisa import measureVisa
 from rigol_activeChannelVisa import apply
 from rigol_channelVisa import channel
 
-class powerSupply(commands, apply):
-    def __init__(self,psVisa):
-        commands.__init__(self, psVisa)
-        apply.__init__(self)
-        self.measure = measureVisa(self)
+class powerSupply(apply):
+    def __init__(self,visaPort):
+        self.visaPort = commands(visaPort)
+        apply.__init__(self, self.visaPort)
+        self.measure = measureVisa(self.visaPort)
 
-        self.ch1 = channel(self,1)
-        self.ch2 = channel(self,2)
-        self.ch3 = channel(self,3)
+        self.ch1 = channel(self.visaPort, 1)
+        self.ch2 = channel(self.visaPort,2)
+        self.ch3 = channel(self.visaPort, 3)
