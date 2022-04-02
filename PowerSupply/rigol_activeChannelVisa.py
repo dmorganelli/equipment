@@ -6,24 +6,24 @@ Created on Sun Mar 20 12:23:38 2022
 """
 
 class apply():
-    def __init__(self):
-        self.visaCommands = self
+    def __init__(self,visaPort):
+        self.visaPort = visaPort
         self.startString_active = ':APPL';
         self.activeChannel = 1
 
     def ch1(self):
         self.activeChannel = 1
-        self.visaCommands._writeVal(
+        self.visaPort._writeVal(
             self.startString_active + ' ' + self._activeChannel)
 
     def ch2(self):
         self.activeChannel = 2;
-        self.visaCommands._writeVal(
+        self.visaPort._writeVal(
             self.startString_active + ' ' + self._activeChannel)
 
     def ch3(self):
         self.activeChannel = 3;
-        self.visaCommands._writeVal(
+        self.visaPort._writeVal(
             self.startString_active + ' ' + self._activeChannel)
 
     @property #getter 
@@ -35,7 +35,7 @@ class apply():
         if channel: #channel in empty when called during visaCommands init from powerSupply class.
             if (channel >= 1 ) & (channel <= 3):
                 self._activeChannel = 'CH'+str(channel)
-                self._writeVal(
+                self.visaPort._writeVal(
                     self.startString_active + ' ' + self._activeChannel)
             else:
                 print('Not a valid Channel. actives is still set to '+self._activeChannel)
@@ -48,7 +48,7 @@ class apply():
             #     channel = 'CH'+str(channel)
             # else:
             #     print('Not a valid Channel.')
-        chSettings = self._sendQuery(self.startString_active, channel)
+        chSettings = self.visaPort._sendQuery(self.startString_active, channel)
         return chSettings
 
 def _checkChannel(channel):
